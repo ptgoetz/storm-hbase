@@ -77,12 +77,18 @@ public class SimpleHBaseMapper implements HBaseMapper {
         if(this.columnFields != null){
             // TODO timestamps
             for(String field : this.columnFields){
-                cols.addColumn(this.columnFamily, field.getBytes(), toBytes(tuple.getValueByField(field)));
+            	Object value = tuple.getValueByField(field);
+            	if(value != null) {
+            		cols.addColumn(this.columnFamily, field.getBytes(), toBytes(value));
+            	}
             }
         }
         if(this.counterFields != null){
             for(String field : this.counterFields){
-                cols.addCounter(this.columnFamily, field.getBytes(), toLong(tuple.getValueByField(field)));
+            	Object value = tuple.getValueByField(field);
+            	if(value != null) {
+            		cols.addCounter(this.columnFamily, field.getBytes(), toLong(tuple.getValueByField(field)));
+            	}
             }
         }
         return cols;
